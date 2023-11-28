@@ -24,6 +24,8 @@ jobs:
 
     - name: Install dependencies
       run: pnpm install
+    - name: output list of files
+      run: ls -la reference-models/src/references
     - name: Seed the database
       run: pnpm db:init
       env:
