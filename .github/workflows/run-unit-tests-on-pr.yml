@@ -25,7 +25,7 @@ jobs:
     - name: Install dependencies
       run: pnpm install
     - name: Seed the database
-      run: pnpm seed
+      run: pnpm db:init
       env:
         MONGODB_HOST: localhost
         MONGO_PORT: 27017
