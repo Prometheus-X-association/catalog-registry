@@ -27,7 +27,7 @@ jobs:
     - name: Seed the database
       run: pnpm db:init
       env:
-        MONGODB_HOST: localhost
+        MONGO_HOST: localhost
         MONGO_PORT: 27017
         MONGO_DATABASE: catalog-registry
         API_KEY: 8904a5a5-24f1-45a1-be87-2984f703ed19
@@ -37,7 +37,7 @@ jobs:
     - name: Run tests
       run: pnpm test
       env:
-        MONGODB_HOST: localhost
+        MONGO_HOST: localhost
         MONGO_PORT: 27017
         MONGO_DATABASE: catalog-registry
         API_KEY: 8904a5a5-24f1-45a1-be87-2984f703ed19
