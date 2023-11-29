@@ -149,7 +149,7 @@ describe("API Tests", () => {
   describe("GET /v1/jobs/:job  - API KEY error", () => {
     it("should respond with code 400 and Header error", async () => {
 
-      const response = await request(app).get(`/v1/jobs/dbUpdateJob`);
+      const response = await request(app).get(`/v1/jobs/dbUpdate`);
       expect(response.status).to.equal(400);
       expect(response.body)
         .to.be.an("object")
@@ -160,8 +160,7 @@ describe("API Tests", () => {
   describe("GET /v1/jobs/:job  - Job name error", () => {
     it("should respond with code 400 and Job name error", async () => {
 
-      const response = await request(app).get(`/v1/jobs/dbupdate`).set({ "x-api-key": process.env.API_KEY});
-      console.log(response.body)
+      const response = await request(app).get(`/v1/jobs/unknownJob`).set({ "x-api-key": process.env.API_KEY});
       expect(response.status).to.equal(400);
       expect(response.body)
         .to.be.an("object")
@@ -172,16 +171,15 @@ describe("API Tests", () => {
   describe("GET /v1/jobs/:job", () => {
     it("should respond with json and a job configuration for the specified job", async () => {
 
-      const response = await request(app).get(`/v1/jobs/dbUpdateJob`).set({ "x-api-key": process.env.API_KEY});
+      const response = await request(app).get(`/v1/jobs/dbUpdate`).set({ "x-api-key": process.env.API_KEY});
       expect(response.status).to.equal(200);
-      console.log(response.body);
     });
   });
 
   describe("PATCH /v1/jobs/:job - API KEY error", () => {
     it("should respond with code 400 and Header error", async () => {
 
-      const response = await request(app).patch(`/v1/jobs/dbUpdateJob`);
+      const response = await request(app).patch(`/v1/jobs/dbUpdate`);
       expect(response.status).to.equal(400);
       expect(response.body)
         .to.be.an("object")
@@ -198,7 +196,7 @@ describe("API Tests", () => {
       };
 
       const response = await request(app)
-        .patch(`/v1/jobs/dbUpdate`)
+        .patch(`/v1/jobs/unknownJob`)
         .send(payload)
         .set({
           "x-api-key": process.env.API_KEY,
@@ -219,7 +217,7 @@ describe("API Tests", () => {
       };
 
       const response = await request(app)
-        .patch(`/v1/jobs/dbUpdateJob`)
+        .patch(`/v1/jobs/dbUpdate`)
         .send(payload)
         .set({
           "x-api-key": process.env.API_KEY,
@@ -240,7 +238,7 @@ describe("API Tests", () => {
       };
 
       const response = await request(app)
-        .patch(`/v1/jobs/dbUpdateJob`)
+        .patch(`/v1/jobs/dbUpdate`)
         .send(payload)
         .set({
           "x-api-key": process.env.API_KEY,
