@@ -86,7 +86,7 @@ mongoose
 
       const processFiles = files.map(async (file) => {
         const filePath = path.join(directoryPath, file);
-
+        console.log(`Processing file ${filePath}`)
         try {
           // Read the JSON-LD file content
           const fileContent = await fs.promises.readFile(filePath, "utf8");

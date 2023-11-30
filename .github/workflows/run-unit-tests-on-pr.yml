@@ -1,0 +1,48 @@
+name: Run pnpm tests
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest 
+    services:
+      mongodb:
+        image: mongo
+        ports:
+          - 27017:27017
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18.15' 
+
+    - name: Install pnpm
+      run: npm install -g pnpm
+
+    - name: Install dependencies
+      run: pnpm install
+    - name: output list of files
+      run: ls -la reference-models/src/references
+    - name: Seed the database
+      run: pnpm db:init
+      env:
+        MONGO_HOST: localhost
+        MONGO_PORT: 27017
+        MONGO_DATABASE: catalog-registry
+        API_KEY: 8904a5a5-24f1-45a1-be87-2984f703ed19
+        API_URL: http://localhost:3000/v1
+        PORT: 3000
+        JOB_TIMEZONE: Europe/Paris
+    - name: Run tests
+      run: pnpm test
+      env:
+        MONGO_HOST: localhost
+        MONGO_PORT: 27017
+        MONGO_DATABASE: catalog-registry
+        API_KEY: 8904a5a5-24f1-45a1-be87-2984f703ed19
+        API_URL: http://localhost:3000/v1
+        PORT: 3000
+        JOB_TIMEZONE: Europe/Paris
