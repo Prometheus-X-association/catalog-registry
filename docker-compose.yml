@@ -32,9 +32,11 @@ services:
 
 networks:
   catalog-registry:
+    name: catalog-registry
     driver: bridge
   ptx:
-    driver: bridge
+    name: ptx
+    external: true
 
 volumes:
   registry_data:
