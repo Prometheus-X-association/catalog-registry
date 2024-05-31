@@ -125,24 +125,21 @@ mongoose
                           {upsert: true}
                       )])
                     }
-                    // if file already exists, update db
+                    // if file already exists, update db and write file
                     else {
-                      // TODO: need more verification
-                      // const refURLPtx = `${process.env.API_URL?.slice(0, -3)}/static/${directory}/${fileName.slice(0,-5)}`
-                      // jsonld["@id"] = refURLPtx;
                       await Promise.all([
-                      // fs.promises.writeFile(path.join(__dirname, `../static/${directory}/${fileName.slice(0,-5)}-ptx.json`), JSON.stringify(jsonld, null, 2)),
-                      DefinedReference.findOneAndUpdate(
-                          {title},
-                          {
-                            type: directory,
-                            refURL: refURL,
-                            ptxOriginURL ,
-                            jsonld: JSON.stringify(jsonld),
-                            uid
-                          },
-                          {upsert: true}
-                      )])
+                        fs.promises.writeFile(path.join(__dirname, `../static/${directory}/${fileName}`), JSON.stringify(jsonld, null, 2)),
+                        DefinedReference.findOneAndUpdate(
+                            {title},
+                            {
+                              type: directory,
+                              refURL: refURL,
+                              ptxOriginURL ,
+                              jsonld: JSON.stringify(jsonld),
+                              uid
+                            },
+                            {upsert: true}
+                        )])
                     }
                   });
           } catch (error) {
