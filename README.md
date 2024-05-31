@@ -28,16 +28,18 @@ To install and run the Prometheus-X Catalog Registry without docker, follow thes
 3. Install the required dependencies: `npm install`
 4. Configure the application by setting up the necessary environment variables. You will need to specify database connection details and other relevant settings.
 5. Initialize your database by running `npm run db:init`
-6. Build the App `npm build`
-7. Start the application: `npm start`
+6. Build the App `npm run build`
+7. Start the application: `npm run start`
 8. The Prometheus-X Catalog Registry will be accessible at the specified URL.
 
 ### Docker
 1. Clone the repository from GitHub: `git clone https://github.com/prometheus-x/catalog-registry.git`
 2. Navigate to the project directory: `cd catalog-registry`
 3. Configure the application by setting up the necessary environment variables. You will need to specify database connection details and other relevant settings.
-4. Start the application: `docker-compose up -d`
-5. If you need to rebuild the image `docker-compose build` and restart with: `docker-compose up -d` 
+4. Create a docker network using `docker network create ptx`
+5. Start the application: `docker-compose up -d`
+6. If you need to rebuild the image `docker-compose build` and restart with: `docker-compose up -d` 
+7. If you don't want to use the mongodb container from the docker compose you can use the command `docker run -d -p your-port:your-port --name catalog-registry catalog-registry` after running `docker-compose build`
 
 ## API Documentation
 

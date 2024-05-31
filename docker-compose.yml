@@ -1,24 +1,24 @@
-version: '3'
+version: '3.8'
 
 services:
-  express-app:
+  catalog-registry:
     container_name: "catalog-registry"
     build:
       context: .
       dockerfile: docker/app/Dockerfile
+    image: catalog-registry:latest
     ports:
-      - "3000:3000"
+      - "${PORT}:${PORT}"
     links:
       - mongodb
     env_file:
       - .env
-    environment:
-      MONGO_URI: "mongodb://mongodb:27017/${MONGO_DATABASE}"
     networks:
       - catalog-registry
+      - ptx
 
   mongodb:
-    container_name: "mongodb"
+    container_name: "catalog-registry-mongodb"
     build:
       context: .
       dockerfile: docker/mongodb/Dockerfile
@@ -26,13 +26,17 @@ services:
 #    ports:
 #      - "27017:27017"
     volumes:
-      - mongodb_data:/data/db
+      - registry_data:/data/db
     networks:
       - catalog-registry
 
 networks:
   catalog-registry:
+    name: catalog-registry
     driver: bridge
+  ptx:
+    name: ptx
+    external: true
 
 volumes:
-  mongodb_data:
+  registry_data:
