@@ -1,8 +1,11 @@
 import { Router } from "express";
 import {
   createUserDefinedReference,
-  getAllReferences, getByFileName,
-  getReferencesByType
+  getAllReferences,
+  getByFileName,
+  getReferencesByType,
+  getResourceByUid,
+  getResourceByUidInJsonld,
 } from "../controllers/references";
 import {
   checkPayloadOnReferenceCreation,
@@ -19,9 +22,8 @@ r.post(
   checkPayloadOnReferenceCreation,
   createUserDefinedReference
 );
-r.get("/:type/:fileName",
-  checkReferenceType,
-  getByFileName
-);
+r.get("/:type/:fileName", checkReferenceType, getByFileName);
+r.get("/resource/:uid", getResourceByUid);
+r.get("/resource/:uid/jsonld", getResourceByUidInJsonld);
 
 export default r;

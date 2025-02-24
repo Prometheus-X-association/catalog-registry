@@ -1,0 +1,14 @@
+{
+  "data-categories": [
+    {
+      "title": "My Custom Data",
+      "description": "This is a custom data category"
+    }
+  ],
+  "service-categories": [
+    {
+      "title": "My Custom Service",
+      "description": "This is a custom service category"
+    }
+  ]
+}

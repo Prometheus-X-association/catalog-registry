@@ -4,5 +4,6 @@ reference-models/
 .env
 static/
 .idea/
+instance.config.json
 
 *.iml
