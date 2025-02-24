@@ -3,6 +3,7 @@ import { exec } from "child_process";
 import { jobConfiguration } from "../src/models/JobConfiguration/JobConfiguration.model";
 import { FrequencyEnum } from "../src/utils/enums/frequencyEnum";
 import path from "path";
+import { existsSync } from "fs";
 
 const { config } = require("dotenv");
 config();
@@ -81,7 +82,7 @@ class Job {
       () => {
         // If instance.config.json exists don't run the db:update
 
-        if (path.join(__dirname, "..", "instance.config.json")) {
+        if (existsSync(path.join(__dirname, "..", "instance.config.json"))) {
           // eslint-disable-next-line no-console
           console.log("instance.config.json exists, skipping db:update job");
           return;
