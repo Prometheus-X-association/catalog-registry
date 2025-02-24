@@ -19,6 +19,7 @@ The Prometheus-X Catalog Registry offers the following features:
 3. **REST API**: The Prometheus-X Catalog Registry is built as a RESTful API, making it easy to integrate and interact with other services or applications. Catalog participants and data ecosystem administrators can utilize the API to retrieve and create information for the registry.
 
 ## Installation
+
 ### Locally
 
 To install and run the Prometheus-X Catalog Registry without docker, follow these steps:
@@ -33,11 +34,12 @@ To install and run the Prometheus-X Catalog Registry without docker, follow thes
 8. The Prometheus-X Catalog Registry will be accessible at the specified URL.
 
 ### Docker
+
 1. Clone the repository from GitHub: `git clone https://github.com/prometheus-x/catalog-registry.git`
 2. Navigate to the project directory: `cd catalog-registry`
 3. Configure the application by setting up the necessary environment variables. You will need to specify database connection details and other relevant settings.
 4. Start the application: `docker-compose up -d`
-5. If you need to rebuild the image `docker-compose build` and restart with: `docker-compose up -d` 
+5. If you need to rebuild the image `docker-compose build` and restart with: `docker-compose up -d`
 6. If you don't want to use the mongodb container from the docker compose you can use the command `docker run -d -p your-port:your-port --name catalog-registry catalog-registry` after running `docker-compose build`
 
 ## API Documentation
@@ -47,6 +49,24 @@ For detailed information on how to use the Prometheus-X Catalog Registry API, re
 You can access the API documentation from your instance at `http://your-registry-url/docs` after starting the application.
 
 You can also access the [github pages](https://prometheus-x-association.github.io/catalog-registry/) of this repository that services an example swagger for easy access without installing the project.
+
+## Custom Instance
+
+The catalog-registry is directly in line with reference-models defined in the [Prometheus-X Reference Models repository](https://github.com/prometheus-x-association/reference-models). If you need your instance to be setup with specific types of data & service categories, you can do so using the `instance.config.json` file and run the setup command.
+
+> If you don't need to customize your instance and are fine to work with the data-categories & service-categories defined in the reference models, you can skip this part.
+
+The project contains a `instance.config.sample.json` file that will help you kickstart the configuration.
+
+```bash
+cp instance.config.sample.json instance.config.json
+```
+
+Then set your data & service categories that will override the base ones. After you've done that, you can apply this configuration by running the following command:
+
+```bash
+pnpm setup:instance
+```
 
 ## Contributing
 

@@ -190,17 +190,65 @@ export const getByFileName = async (
 ) => {
   try {
     const { type, fileName } = req.params;
-    const data = await DefinedReference.findOne({ type, uid: fileName }, {_id: 0, jsonld: 1 });
+    const data = await DefinedReference.findOne(
+      { type, uid: fileName },
+      { _id: 0, jsonld: 1 }
+    );
 
-    if (!data){
-      throw new NotFoundError("Reference not found")
+    if (!data) {
+      throw new NotFoundError("Reference not found");
     }
 
     return res.json(JSON.parse(data.jsonld));
   } catch (err) {
+    if (err instanceof NotFoundError) {
+      return res.status(404).json(err.jsonResponse());
+    }
 
-    if(err instanceof NotFoundError){
-      return res.status(404).json(err.jsonResponse())
+    next(err);
+  }
+};
+
+export const getResourceByUid = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { uid } = req.params;
+    const data = await DefinedReference.findOne({ uid });
+
+    if (!data) {
+      throw new NotFoundError("Reference not found");
+    }
+
+    return res.json(data);
+  } catch (err) {
+    if (err instanceof NotFoundError) {
+      return res.status(404).json(err.jsonResponse());
+    }
+
+    next(err);
+  }
+};
+
+export const getResourceByUidInJsonld = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { uid } = req.params;
+    const data = await DefinedReference.findOne({ uid });
+
+    if (!data) {
+      throw new NotFoundError("Reference not found");
+    }
+
+    return res.json(JSON.parse(data.jsonld));
+  } catch (err) {
+    if (err instanceof NotFoundError) {
+      return res.status(404).json(err.jsonResponse());
     }
 
     next(err);

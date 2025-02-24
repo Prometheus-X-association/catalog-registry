@@ -26,6 +26,7 @@ if (missingEnvVars.length > 0) {
 
 // Construct the MongoDB URI
 let mongoUri = `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_DATABASE}`;
+console.log(mongoUri);
 
 // Append username and password if available
 if (process.env.MONGO_USERNAME && process.env.MONGO_PASSWORD) {
@@ -41,17 +42,14 @@ mongoose
   .then(async () => {
     console.log(`${GREEN} Connected to MongoDB ${RESET}`);
 
-
-    const schema = new mongoose.Schema({
+    const DefinedReference = mongoose.model("DefinedReference", new mongoose.Schema({
       type: { type: String, required: true },
       refURL: { type: String, required: false },
       ptxOriginURL: { type: String, required: false },
       title: { type: String, required: true },
       jsonld: { type: String, required: true },
       uid: { type: String, required: false },
-    });
-
-    const DefinedReference = mongoose.model("DefinedReference", schema);
+    }));
 
     // await DefinedReference.collection.createIndex(
     //   { title: 1 },

@@ -14,7 +14,8 @@
     "format": "npm run prettier && npm run lint:fix",
     "postinstall": "git clone https://github.com/Prometheus-X-association/reference-models.git && echo \"\n\nAll done, please setup your database with the reference models by running npm run db:init\"",
     "db:init": "node scripts/dbUpdate.js",
-    "db:update": "rm -rf reference-models && git clone https://github.com/Prometheus-X-association/reference-models.git && node scripts/dbUpdate.js"
+    "db:update": "rm -rf reference-models && git clone https://github.com/Prometheus-X-association/reference-models.git && node scripts/dbUpdate.js",
+    "setup:instance": "node scripts/configureInstance.js"
   },
   "keywords": [
     "Prometheus-X",
