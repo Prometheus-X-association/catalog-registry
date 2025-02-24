@@ -2,6 +2,7 @@
 import { exec } from "child_process";
 import { jobConfiguration } from "../src/models/JobConfiguration/JobConfiguration.model";
 import { FrequencyEnum } from "../src/utils/enums/frequencyEnum";
+import path from "path";
 
 const { config } = require("dotenv");
 config();
@@ -11,7 +12,6 @@ const cron = require("node-cron");
 const mongoose = require("mongoose");
 
 class Job {
-
   jobName;
   cronSchedule = "0 4 * * *";
   job;
@@ -45,7 +45,10 @@ class Job {
             })
             .exec();
 
-          if (this.dbUpdateJobConfiguration && this.dbUpdateJobConfiguration.scheduled) {
+          if (
+            this.dbUpdateJobConfiguration &&
+            this.dbUpdateJobConfiguration.scheduled
+          ) {
             switch (this.dbUpdateJobConfiguration.frequency) {
               // Every day at 4 AM
               case FrequencyEnum.DAILY:
@@ -66,8 +69,9 @@ class Job {
             }
           }
           resolve();
-        }).catch(reject);
-    })
+        })
+        .catch(reject);
+    });
   }
 
   async start() {
@@ -75,14 +79,20 @@ class Job {
     this.job = cron.schedule(
       this.cronSchedule,
       () => {
+        // If instance.config.json exists don't run the db:update
+
+        if (path.join(__dirname, "..", "instance.config.json")) {
+          // eslint-disable-next-line no-console
+          console.log("instance.config.json exists, skipping db:update job");
+          return;
+        }
+
         exec(`npm run db:update`, (error) => {
-          if (error) {
-            // eslint-disable-next-line no-console,no-undef
-            return;
-          }
+          if (error) return;
+
           // eslint-disable-next-line no-console,no-undef
           console.log(`${this.constructor.name} db:update successfully`);
-        })
+        });
       },
       {
         scheduled: this.dbUpdateJobConfiguration?.scheduled ?? true,

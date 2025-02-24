@@ -25,7 +25,6 @@ if (missingEnvVars.length > 0) {
 
 // Construct the MongoDB URI
 let mongoUri = `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_DATABASE}`;
-console.log(mongoUri);
 
 // Append username and password if available
 if (process.env.MONGO_USERNAME && process.env.MONGO_PASSWORD) {
