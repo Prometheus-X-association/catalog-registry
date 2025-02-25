@@ -80,6 +80,8 @@ class Job {
     this.job = cron.schedule(
       this.cronSchedule,
       () => {
+        if (process.env.SKIP_SYNC_CRON == "true") return;
+
         // If instance.config.json exists don't run the db:update
 
         if (existsSync(path.join(__dirname, "..", "instance.config.json"))) {
