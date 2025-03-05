@@ -8,7 +8,7 @@ const data = {
 };
 
 export default async () => {
-  const dbUpdateJob = await jobConfiguration.findOne({ job: "dbUpdateJob" });
+  const dbUpdateJob = await jobConfiguration.findOne({ job: "dbUpdate" });
   if (!dbUpdateJob) {
     await jobConfiguration.deleteMany({});
     await jobConfiguration.create(data);
