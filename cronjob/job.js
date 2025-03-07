@@ -1,16 +1,16 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires,no-undef
+/* global console */
+/* global process */
+
+import { config } from "dotenv";
+config();
+
 import { exec } from "child_process";
 import { jobConfiguration } from "../src/models/JobConfiguration/JobConfiguration.model";
 import { FrequencyEnum } from "../src/utils/enums/frequencyEnum";
 import path from "path";
 import { existsSync } from "fs";
-
-const { config } = require("dotenv");
-config();
-// eslint-disable-next-line @typescript-eslint/no-var-requires,no-undef
-const cron = require("node-cron");
-// eslint-disable-next-line @typescript-eslint/no-var-requires,no-undef
-const mongoose = require("mongoose");
+import cron from "node-cron";
+import mongoose from "mongoose";
 
 class Job {
   jobName;
@@ -23,23 +23,20 @@ class Job {
   }
 
   async getConfiguration() {
+    if (process.env.SKIP_SYNC_CRON == "true") return;
     return new Promise((resolve, reject) => {
       let mongoUri = `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_DATABASE}`;
       // Append username and password if available
-      // eslint-disable-next-line no-undef
       if (process.env.MONGO_USERNAME && process.env.MONGO_PASSWORD) {
-        // eslint-disable-next-line no-undef
         mongoUri = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOST}/${process.env.MONGO_DATABASE}`;
       }
 
-      // Connect to the MongoDB database
       mongoose
         .connect(mongoUri, {
           useNewUrlParser: true,
           useUnifiedTopology: true,
         })
         .then(async () => {
-          // eslint-disable-next-line no-console,no-undef
           this.dbUpdateJobConfiguration = await jobConfiguration
             .findOne({
               job: this.jobName,
@@ -74,16 +71,18 @@ class Job {
         .catch(reject);
     });
   }
-
   async start() {
+    if (process.env.SKIP_SYNC_CRON == "true") {
+      // eslint-disable-next-line no-console
+      console.log("Skipping sync cron job");
+      return;
+    }
+
     await this.getConfiguration();
     this.job = cron.schedule(
       this.cronSchedule,
       () => {
-        if (process.env.SKIP_SYNC_CRON == "true") return;
-
         // If instance.config.json exists don't run the db:update
-
         if (existsSync(path.join(__dirname, "..", "instance.config.json"))) {
           // eslint-disable-next-line no-console
           console.log("instance.config.json exists, skipping db:update job");

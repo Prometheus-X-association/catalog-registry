@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { jobConfiguration } from "../models/JobConfiguration/JobConfiguration.model";
 import { FrequencyEnum } from "../utils/enums/frequencyEnum";
-// @ts-ignore
 import DbUpdateJob from "../../cronjob/dbUpdateJob";
 
 /**

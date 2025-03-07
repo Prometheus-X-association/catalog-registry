@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import jobConfigurationSeed from "../seed/jobConfigurationSeed";
-// @ts-ignore
 import DbUpdateJob from "../../cronjob/dbUpdateJob";
 
 export async function loadMongoose() {
@@ -18,12 +17,11 @@ export async function loadMongoose() {
     console.error.bind(console, "MongoDB connection error: ")
   );
 
-  await jobConfigurationSeed().then(() => {
-    // Job lauch after succesfully seeded the database
-    // temprarily here to not broke the unit tests
-    new DbUpdateJob("dbUpdate");
+  await jobConfigurationSeed().then((res) => {
+    if (res?.created) new DbUpdateJob("dbUpdate");
 
-    console.log("Seed succeeded");
+    // eslint-disable-next-line
+    console.log(res?.message);
   });
 
   return connection;
