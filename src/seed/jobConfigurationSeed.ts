@@ -12,5 +12,14 @@ export default async () => {
   if (!dbUpdateJob) {
     await jobConfiguration.deleteMany({});
     await jobConfiguration.create(data);
+    return {
+      message: "New 'dbUpdate' job conviguration created in database",
+      created: true,
+    };
   }
+  return {
+    message:
+      "Job configuration for 'dbUpdate' already exists, skipping creation to avoid configuration override",
+    created: false,
+  };
 };

@@ -8,5 +8,6 @@ bin
 git-hooks
 pnpm-lock.yaml
 reference-models/
-scripts/
+scripts/*/**
+scripts
 docs

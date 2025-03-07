@@ -33,6 +33,9 @@ if (process.env.MONGO_USERNAME && process.env.MONGO_PASSWORD) {
   mongoUri = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOST}/${process.env.MONGO_DATABASE}`;
 }
 
+let dir;
+
+
 // Connect to the MongoDB database
 mongoose
   .connect(mongoUri, {
@@ -57,13 +60,19 @@ mongoose
     // );
 
     // dynamically retrieve all the directories needed to insert in database and copy in static dir in references directory
-    const dir = await fs.promises.readdir(path.join(
-        __dirname,
-        "..",
-        "reference-models",
-        "src",
-        "references"
-    ));
+    let dir;
+    try {
+      dir = await fs.promises.readdir(path.join(
+          __dirname,
+          "..",
+          "reference-models",
+          "src",
+          "references"
+      ));
+    } catch {
+      console.error(`${RED} Error reading reference models, please ensure to clone the reference-models repo by running pnpm clone:reference-models first. ${RESET}`);
+      process.exit(1);
+    }
 
     // no need of the index.json in array
     const directories = dir.filter(e => e !== "index.json")

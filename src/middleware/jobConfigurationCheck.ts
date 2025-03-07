@@ -1,9 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { ReferenceTypeError } from "../errors/ReferenceTypeError";
 import { BadRequestError } from "../errors/BadRequestError";
 import { jobs } from "../data/jobs";
 import { FrequencyEnum } from "../utils/enums/frequencyEnum";
-import { JobConfigurationError } from "../errors/jobConfigurationError";
 
 /**
  * Verifies that the job is a known one
@@ -39,7 +37,6 @@ export const checkPayloadOnJobConfigurationUpdate = async (
   next: NextFunction
 ) => {
   try {
-    const { job } = req.params;
     const body = req.body;
     const errors: string | any[] = [];
 
